@@ -1,9 +1,11 @@
 import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 module.exports = (): Configuration => ({
+  context: __dirname, // to automatically find tsconfig.json
   entry: path.join(__dirname, 'src', 'index.tsx'),
   ...(process.env.production || !process.env.development
     ? {}
@@ -34,6 +36,10 @@ module.exports = (): Configuration => ({
         test: /\.ts(x?)$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
+        options: {
+          // disable type checker - we will use it in fork plugin
+          transpileOnly: true,
+        },
       },
       // Styles
       {
@@ -72,6 +78,12 @@ module.exports = (): Configuration => ({
     // DefinePlugin allows you to create global constants which can be configured at compile time
     new DefinePlugin({
       'process.env': process.env.production || !process.env.development,
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      // Speeds up TypeScript type checking and ESLint linting (by moving each to a separate process)
+      eslint: {
+        files: './src/**/*.{ts,tsx,js,jsx}',
+      },
     }),
   ],
 });
