@@ -1,6 +1,7 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
+// import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 module.exports = (): Configuration => ({
   entry: path.join(__dirname, 'src', 'index.tsx'),
@@ -15,7 +16,8 @@ module.exports = (): Configuration => ({
   mode: 'development',
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    // This plugin creates those 'alias' entries from 'paths' entries in your 'tsconfig.json'
+    // plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
   },
   devServer: {
     contentBase: path.join(__dirname, 'src'),
@@ -63,9 +65,11 @@ module.exports = (): Configuration => ({
     ],
   },
   plugins: [
+    // HtmlWebpackPlugin simplifies creation of HTML files to serve your webpack bundles
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'src', 'index.html'),
-    }), // DefinePlugin allows you to create global constants which can be configured at compile time
+    }),
+    // DefinePlugin allows you to create global constants which can be configured at compile time
     new DefinePlugin({
       'process.env': process.env.production || !process.env.development,
     }),
