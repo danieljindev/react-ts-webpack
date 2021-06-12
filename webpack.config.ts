@@ -1,15 +1,13 @@
-import path from 'path';
-import { Configuration, DefinePlugin } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import path from 'path'
+import { Configuration, DefinePlugin } from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 
 module.exports = (): Configuration => ({
   context: __dirname, // to automatically find tsconfig.json
   entry: path.join(__dirname, 'src', 'index.tsx'),
-  ...(process.env.production || !process.env.development
-    ? {}
-    : { devtool: 'eval-source-map' }),
+  ...(process.env.production || !process.env.development ? {} : { devtool: 'eval-source-map' }),
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].[fullhash].bundle.js',
@@ -86,4 +84,4 @@ module.exports = (): Configuration => ({
       },
     }),
   ],
-});
+})
