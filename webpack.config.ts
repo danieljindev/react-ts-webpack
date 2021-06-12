@@ -1,7 +1,7 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Configuration, DefinePlugin } from 'webpack';
-// import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 module.exports = (): Configuration => ({
   entry: path.join(__dirname, 'src', 'index.tsx'),
@@ -17,7 +17,7 @@ module.exports = (): Configuration => ({
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     // This plugin creates those 'alias' entries from 'paths' entries in your 'tsconfig.json'
-    // plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
   },
   devServer: {
     contentBase: path.join(__dirname, 'src'),
