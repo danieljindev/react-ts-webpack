@@ -1,14 +1,20 @@
 import path from 'path'
-import { Configuration, DefinePlugin } from 'webpack'
+import dotenv from 'dotenv'
+import { Configuration, DefinePlugin, ProvidePlugin } from 'webpack'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 
+const result = dotenv.config()
+
+if (result.error) {
+  throw result.error
+}
+
 const commonConfig: Configuration = {
   // context: __dirname, // to automatically find tsconfig.json
   entry: path.join(__dirname, '../src', 'index.tsx'),
-  ...(process.env.production || !process.env.development ? {} : { devtool: 'eval-source-map' }),
   output: {
     path: path.join(__dirname, '../build'),
     filename: '[name].[fullhash].bundle.js',
@@ -60,7 +66,7 @@ const commonConfig: Configuration = {
   plugins: [
     // DefinePlugin allows you to create global constants which can be configured at compile time
     new DefinePlugin({
-      'process.env': process.env.production || !process.env.development,
+      'process.env': JSON.stringify(result.parsed),
     }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
@@ -78,6 +84,10 @@ const commonConfig: Configuration = {
       eslint: {
         files: './src/**/*.{ts,tsx,js,jsx}',
       },
+    }),
+    // fix "process is not defined" error:
+    new ProvidePlugin({
+      process: 'process/browser',
     }),
   ],
 }
