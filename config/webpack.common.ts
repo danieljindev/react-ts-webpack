@@ -1,15 +1,16 @@
 import path from 'path'
 import { Configuration, DefinePlugin } from 'webpack'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 
-module.exports = (): Configuration => ({
-  context: __dirname, // to automatically find tsconfig.json
-  entry: path.join(__dirname, 'src', 'index.tsx'),
+const commonConfig: Configuration = {
+  // context: __dirname, // to automatically find tsconfig.json
+  entry: path.join(__dirname, '../src', 'index.tsx'),
   ...(process.env.production || !process.env.development ? {} : { devtool: 'eval-source-map' }),
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, '../build'),
     filename: '[name].[fullhash].bundle.js',
     publicPath: '/',
   },
@@ -17,10 +18,10 @@ module.exports = (): Configuration => ({
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     // This plugin creates those 'alias' entries from 'paths' entries in your 'tsconfig.json'
-    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
+    plugins: [new TsconfigPathsPlugin({ configFile: path.join(__dirname, '../tsconfig.json') })],
   },
   devServer: {
-    contentBase: path.join(__dirname, 'src'),
+    contentBase: path.join(__dirname, '../src'),
   },
   module: {
     rules: [
@@ -38,18 +39,6 @@ module.exports = (): Configuration => ({
           // disable type checker - we will use it in fork plugin
           transpileOnly: true,
         },
-      },
-      // Styles
-      {
-        test: /\.(scss|css)$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true, importLoaders: 1 },
-          },
-          { loader: 'sass-loader', options: { sourceMap: true } },
-        ],
       },
       // Fonts
       {
@@ -69,13 +58,20 @@ module.exports = (): Configuration => ({
     ],
   },
   plugins: [
-    // HtmlWebpackPlugin simplifies creation of HTML files to serve your webpack bundles
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html'),
-    }),
     // DefinePlugin allows you to create global constants which can be configured at compile time
     new DefinePlugin({
       'process.env': process.env.production || !process.env.development,
+    }),
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../public'),
+          globOptions: {
+            ignore: ['**/index.html', '**/favicon.ico'],
+          },
+        },
+      ],
     }),
     new ForkTsCheckerWebpackPlugin({
       // Speeds up TypeScript type checking and ESLint linting (by moving each to a separate process)
@@ -84,4 +80,6 @@ module.exports = (): Configuration => ({
       },
     }),
   ],
-})
+}
+
+export default commonConfig

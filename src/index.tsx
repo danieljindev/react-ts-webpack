@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import './index.scss'
 
 const HelloWorld = () => {
+  console.log('HI')
   return <h1>Hello World</h1>
 }
 
