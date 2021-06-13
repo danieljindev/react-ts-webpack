@@ -1,9 +1,7 @@
 import path from 'path'
 import { Configuration, HotModuleReplacementPlugin } from 'webpack'
-
-import { merge } from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-
+import { merge } from 'webpack-merge'
 import commonConfig from './webpack.common'
 
 const devConfig = (): Configuration =>

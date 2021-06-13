@@ -9,10 +9,9 @@
     "build": "webpack --env production --config config/webpack.prod.ts --progress",
     "start": "webpack serve --env development --config config/webpack.dev.ts --open --hot",
     "eslint": "eslint src/**/*.{ts,tsx}",
-    "eslint:fix": "eslint --fix src/**/*.{ts,tsx}",
+    "eslint:fix": "eslint --quiet --fix src/**/*.{ts,tsx}",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,scss,md}\"",
-    "format:check": "prettier --check \"./**/*.{js,jsx,ts,tsx,css,scss,md}\"",
-    "lint": "eslint src/**/*.{ts,tsx} --quiet --fix"
+    "format:check": "prettier --check \"./**/*.{js,jsx,ts,tsx,css,scss,md}\""
   },
   "dependencies": {
     "react": "^17.0.2",
@@ -34,6 +33,7 @@
     "dotenv": "^10.0.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-file-progress": "^1.1.1",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",

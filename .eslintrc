@@ -1,10 +1,16 @@
 {
   "parser": "@typescript-eslint/parser",
-
   "env": {
     "browser": true
   },
-  "extends": ["plugin:@typescript-eslint/recommended", "plugin:react/recommended", "plugin:import/typescript", "plugin:import/recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
   "parserOptions": {
     "project": ["tsconfig.json"],
     "ecmaVersion": 2020,
@@ -13,7 +19,15 @@
       "jsx": true
     }
   },
-  "plugins": ["@typescript-eslint", "react", "react-hooks", "eslint-plugin-import", "prettier", "import"],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "eslint-plugin-import",
+    "prettier",
+    "import",
+    "file-progress"
+  ],
   "rules": {
     "import/order": [
       "error",
@@ -22,17 +36,23 @@
         "newlines-between": "always"
       }
     ],
-    "no-console": 1,
+    "no-console": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/prop-types": "off",
+    "newline-before-return": "warn",
+    "no-useless-return": "warn",
+    "prefer-const": "warn",
+    "import/no-cycle": "off",
+    "no-unused-vars": "off",
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "file-progress/activate": 1
   },
   "settings": {
     "react": {

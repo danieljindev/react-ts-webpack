@@ -1,9 +1,10 @@
+import './index.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.scss'
 
 const HelloWorld = () => {
-  console.log(process.env)
+  console.log(process.env) // eslint-disable-line
+
   return <h1>Hello World!</h1>
 }
 
